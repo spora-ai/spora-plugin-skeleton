@@ -6,7 +6,7 @@
     "version": "0.1.0",
     "require": {
         "php": "^8.4.1",
-        "spora/core": "^0.1"
+        "spora-ai/spora-core": "^0.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.94",

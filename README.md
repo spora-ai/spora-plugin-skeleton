@@ -35,10 +35,10 @@ Use this repository as a template for any new `spora-plugin`:
 
 The skeleton's `composer.json` declares **two path repositories** —
 `../spora-core` and `../spora-core/spora-installer`. Both are temporary
-workarounds because neither `spora/core` nor `spora/installer` ships on
-Packagist yet (see the multi-repo split in the consolidated execution
-plan, Phase B / E). Clone `spora-core` alongside this plugin so the
-dependencies resolve:
+workarounds because neither `spora-ai/spora-core` nor `spora/installer`
+ships on Packagist yet (see the multi-repo split in the consolidated
+execution plan, Phase B / E). Clone `spora-core` alongside this plugin
+so the dependencies resolve:
 
 ```bash
 git clone https://github.com/spora-ai/spora-core.git ../spora-core
@@ -47,8 +47,8 @@ composer install
 ```
 
 Remove both `repositories` entries from `composer.json` once
-[`spora/core`](https://packagist.org/packages/spora/core) and
-`spora/installer` both ship on Packagist. The CI workflow
+[`spora-ai/spora-core`](https://packagist.org/packages/spora-ai/spora-core)
+and `spora/installer` both ship on Packagist. The CI workflow
 (`.github/workflows/ci.yml`) already handles this for you: it checks
 `spora-ai/spora-core` out as a sibling so the path repo resolves on
 GitHub Actions.
