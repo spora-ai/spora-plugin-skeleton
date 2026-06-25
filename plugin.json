@@ -1,4 +1,5 @@
 {
+    "$schema": "https://raw.githubusercontent.com/spora-ai/spora-core/v0.3.0/plugin.schema.json",
     "slug": "skeleton",
     "description": "Skeleton plugin — replace this with your plugin's description.",
     "class": "Spora\\Plugins\\Skeleton\\SkeletonPlugin",
