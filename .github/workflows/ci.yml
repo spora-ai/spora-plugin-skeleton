@@ -27,15 +27,6 @@ jobs:
       - name: Checkout plugin
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
-      - name: Checkout spora/core as sibling
-        # The skeleton's composer.json declares a path repo at ../spora-core,
-        # so the dependency only resolves if Spora sits beside the plugin
-        # in the workspace. Remove this step once spora/core ships on Packagist.
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-        with:
-          repository: spora-ai/spora-core
-          path: ../spora-core
-
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
         with:
@@ -57,12 +48,6 @@ jobs:
       - name: Checkout plugin
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
-      - name: Checkout spora/core as sibling
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-        with:
-          repository: spora-ai/spora-core
-          path: ../spora-core
-
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
         with:
@@ -82,12 +67,6 @@ jobs:
     steps:
       - name: Checkout plugin
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-
-      - name: Checkout spora/core as sibling
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-        with:
-          repository: spora-ai/spora-core
-          path: ../spora-core
 
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
