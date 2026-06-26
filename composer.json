@@ -3,7 +3,6 @@
     "description": "Skeleton for Spora plugins — copy this repo to start a new one.",
     "type": "spora-plugin",
     "license": "MIT",
-    "version": "0.1.0",
     "require": {
         "php": "^8.4.1",
         "spora-ai/spora-core": "^0.3"
