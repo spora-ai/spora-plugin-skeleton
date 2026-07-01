@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19668eb8ac0f3888b928975b774e4076",
+    "content-hash": "4a308e3cb60410f25ca29b7cefbe464d",
     "packages": [
         {
             "name": "brick/math",
@@ -2425,16 +2425,16 @@
         },
         {
             "name": "spora-ai/spora-core",
-            "version": "0.3.0",
+            "version": "v0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spora-ai/spora-core.git",
-                "reference": "202d2978ac22b57b8d467dcb41c15d422993ac44"
+                "reference": "7c9a1c87ca0c3d77203cab06782bd6de741fd06d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spora-ai/spora-core/zipball/202d2978ac22b57b8d467dcb41c15d422993ac44",
-                "reference": "202d2978ac22b57b8d467dcb41c15d422993ac44",
+                "url": "https://api.github.com/repos/spora-ai/spora-core/zipball/7c9a1c87ca0c3d77203cab06782bd6de741fd06d",
+                "reference": "7c9a1c87ca0c3d77203cab06782bd6de741fd06d",
                 "shasum": ""
             },
             "require": {
@@ -2481,6 +2481,9 @@
                 "phpstan/phpstan": "^2.1",
                 "phpstan/phpstan-mockery": "^2.0"
             },
+            "bin": [
+                "bin/spora"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2494,9 +2497,9 @@
             "description": "A portable, zero-configuration AI agent orchestration platform that runs on any shared host (cPanel/FTP) without system dependencies beyond PHP 8.4+.",
             "support": {
                 "issues": "https://github.com/spora-ai/spora-core/issues",
-                "source": "https://github.com/spora-ai/spora-core/tree/v0.3.0"
+                "source": "https://github.com/spora-ai/spora-core/tree/v0.5.2"
             },
-            "time": "2026-06-25T09:16:09+00:00"
+            "time": "2026-07-01T11:07:58+00:00"
         },
         {
             "name": "symfony/clock",
