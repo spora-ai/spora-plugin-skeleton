@@ -14,6 +14,16 @@ Use this repository as a template for any new `spora-plugin`:
 6. If your plugin needs database tables, add Laravel migrations under
    `database/migrations/` and bump `SkeletonPlugin::schemaVersion()`.
 
+## Authoring guidelines
+
+> ⚠️ **Driver layer is framework-internal.** Plugins should not depend
+> on the internal shape of `Spora\Drivers\ValueObjects\LLMResponse`,
+> `Spora\Drivers\ValueObjects\ContentBlock`, `Spora\Drivers\ValueObjects\Usage`,
+> or `Spora\Agents\ValueObjects\HistoryMessageContext`. Route through
+> orchestrator services (`AgentOrchestrator`, `TaskService`) instead.
+> The driver VO and history context may change between minor releases
+> without deprecation.
+
 ## Layout
 
 ```
