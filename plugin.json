@@ -1,7 +1,6 @@
 {
     "$schema": "https://docs.spora-ai.com/schemas/plugin.schema.json",
     "name": "spora-ai/spora-plugin-skeleton",
-    "version": "0.1.0",
     "slug": "skeleton",
     "description": "Skeleton plugin — replace this with your plugin's description.",
     "class": "Spora\\Plugins\\Skeleton\\SkeletonPlugin",
