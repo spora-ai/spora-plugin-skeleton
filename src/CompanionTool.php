@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Spora\Plugins\Skeleton;
 
+use Spora\Services\PrincipalContext;
 use Spora\Tools\AbstractTool;
 use Spora\Tools\Attributes\Tool;
 use Spora\Tools\ValueObjects\ToolResult;
 
 /**
- * Fork-and-go example demonstrating the `recommendsSkills` attribute parameter.
+ * Fork-and-go example that ships a tool + skill pair.
  *
- * The skill slug listed below is bundled by this plugin via
- * {@see SkeletonPlugin::skillPaths()}. The runtime validator in spora-core
- * raises `TOOLS_RECOMMENDS_SKILLS_MISSING` on `GET /api/v1/tools` when a
- * declared slug is not on disk — the test in `tests/Unit/CompanionToolValidationTest.php`
- * catches that regression before publish.
+ * The bundled skill lives at `skills/companion-skill/SKILL.md` and is
+ * loaded by Spora's SkillScanner at boot. Once `#[Tool(recommendsSkills: ...)]`
+ * ships in a public spora-core release (gated on
+ * {@link https://github.com/spora-ai/spora-core/pull/269}), add the
+ * `recommendsSkills: ['companion-skill']` argument here so the operator
+ * UI's "Enable skill" affordance picks the skill up automatically.
  */
 #[Tool(
     name: 'companion',
-    description: 'Demo tool that bundles a skill — fork-and-go example of #[Tool(recommendsSkills: ...)].',
-    recommendsSkills: ['companion-skill'],
+    description: 'Demo tool that bundles a skill — fork-and-go example.',
 )]
 final class CompanionTool extends AbstractTool
 {
@@ -32,6 +33,7 @@ final class CompanionTool extends AbstractTool
         int $agentId,
         ?int $userId = null,
         ?int $taskId = null,
+        ?PrincipalContext $context = null,
     ): ToolResult {
         return ToolResult::ok(
             content: 'companion ok',
