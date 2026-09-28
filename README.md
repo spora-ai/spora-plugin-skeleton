@@ -55,6 +55,32 @@ and `SkeletonPlugin::agentTemplatePaths()` resolve out of the box.
 Plugin authors can leave them empty if the plugin ships none, or delete
 the methods in `SkeletonPlugin.php` to drop the hook entirely.
 
+## Bundled skills (recommended pattern)
+
+`src/CompanionTool.php` declares `recommendsSkills: ['companion-skill']`
+on its `#[Tool]` attribute, and `skills/companion-skill/SKILL.md` ships
+the matching skill directory. Together they are the fork-and-go example
+of spora-core's recommended-skill contract:
+
+- The attribute bundles the skill for the operator — agents can pick it
+  from the Skill tool's `allowed_skills` multi-select without any extra
+  wiring on your part.
+- The runtime validator in spora-core ≥ 0.29.0 enforces strict mode:
+  if any slug in `recommendsSkills` is not on disk, `GET /api/v1/tools`
+  returns HTTP 500 with code `TOOLS_RECOMMENDS_SKILLS_MISSING` for the
+  whole plugin — not just the offending tool. Ship the directory or
+  remove the slug; the attribute cannot stay half-declared.
+- `tests/Unit/CompanionToolValidationTest.php` is the recommended
+  plugin-author pattern: build a `ToolConfigNameResolver` seeded with
+  your tool class, hand it to a `ToolsRecommendsSkillsValidator`
+  alongside a synthesised `SkillScanner`, and assert `validate()` returns
+  an empty list. Copy that test verbatim — it's the build-time gate
+  that catches a missing bundled skill before it reaches the tools page.
+
+Delete `CompanionTool`, its companion skill, and the two tests when you
+fork the repo into a real plugin; keep `skillPaths()` wired up if your
+plugin ships any skills of its own.
+
 ## Local development
 
 Clone the repo, install dependencies, and run the tests:

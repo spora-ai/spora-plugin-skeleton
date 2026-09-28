@@ -29,6 +29,7 @@ final class SkeletonPlugin extends AbstractPlugin
     {
         return [
             EchoTool::class,
+            CompanionTool::class,
         ];
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Spora\Plugins\Skeleton\Tools;
 
+use Spora\Services\PrincipalContext;
 use Spora\Tools\AbstractTool;
 use Spora\Tools\Attributes\Tool;
 use Spora\Tools\Attributes\ToolParameter;
@@ -36,6 +37,7 @@ final class EchoTool extends AbstractTool
         int $agentId,
         ?int $userId = null,
         ?int $taskId = null,
+        ?PrincipalContext $context = null,
     ): ToolResult {
         $message = (string) ($arguments['message'] ?? '');
 
