@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Psr\Log\NullLogger;
 use Spora\Plugins\Skeleton\CompanionTool;
+use Spora\Plugins\Skeleton\Tests\Support\Exceptions\TestTempDirectoryCreationException;
 use Spora\Services\ToolConfigNameResolver;
 use Spora\Services\ToolsRecommendsSkillsValidator;
 use Spora\Skills\SkillScanner;
@@ -15,7 +16,7 @@ function makeCompanionSkillScanner(): array
 {
     $abs = sys_get_temp_dir() . '/spora_companion_scan_' . uniqid('', true);
     if (!is_dir($abs) && !mkdir($abs, 0o755, true) && !is_dir($abs)) {
-        throw new RuntimeException("Cannot create test directory: {$abs}");
+        throw new TestTempDirectoryCreationException("Cannot create test directory: {$abs}");
     }
 
     $cleanup = static function () use ($abs): void {
@@ -52,7 +53,7 @@ test('the bundled companion-skill satisfies ToolsRecommendsSkillsValidator', fun
     try {
         $dir = $root . '/companion-skill';
         if (!is_dir($dir) && !mkdir($dir, 0o755, true) && !is_dir($dir)) {
-            throw new RuntimeException("Cannot create skill directory: {$dir}");
+            throw new TestTempDirectoryCreationException("Cannot create skill directory: {$dir}");
         }
         file_put_contents(
             $dir . '/SKILL.md',
