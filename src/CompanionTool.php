@@ -27,15 +27,10 @@ final class CompanionTool extends AbstractTool
 {
     /**
      * @param array<string, mixed> $arguments
-     * @param int|null              $userId     Deprecated: unused here. Read
-     *                                         `$context->ownerUserId` instead;
-     *                                         removed from the interface in
-     *                                         core 0.30.0.
      */
     public function execute(
         array $arguments,
         int $agentId,
-        ?int $userId = null,
         ?int $taskId = null,
         ?PrincipalContext $context = null,
     ): ToolResult {
