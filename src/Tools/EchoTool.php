@@ -31,6 +31,9 @@ final class EchoTool extends AbstractTool
 {
     /**
      * @param array<string, mixed> $arguments
+     *
+     * @deprecated 1.0 The interface drops this parameter in core 0.30.0;
+     *                 callers pass $context->ownerUserId.
      */
     public function execute(
         array $arguments,
