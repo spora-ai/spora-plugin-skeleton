@@ -2,6 +2,20 @@
 /.phpunit.cache/
 /.phpunit.result.cache
 /.php-cs-fixer.cache
+/.phpstan-cache/
 /.worktrees/
+
+# Test + coverage output. Add a `test:coverage:*` script to composer.json
+# and these keep the report out of `git status`.
+/coverage/
+coverage.xml
+# SQLite artifact: a test that opens a `:memory:` database leaves a file
+# with exactly that name in the repo root.
+/:memory:
+
+# Composer install artifact: SporaPluginFrontendInstaller copies the
+# frontend bundle here from the required -frontend package. The installer
+# owns this directory and wipes it on uninstall — never commit into it.
+/public/
 
 /tmp/
