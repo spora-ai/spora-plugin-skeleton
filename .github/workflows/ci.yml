@@ -35,10 +35,14 @@ jobs:
           coverage: none
           tools: composer
 
-      # spora-core resolves from Packagist against the declared floor,
-      # so a green run proves real-world compatibility.
+      # `composer install`, not `composer update`: this project's Sonar
+      # gate rates a build-time dependency resolve a security issue on new
+      # code (C Security Rating on New Code), so the floor is proven
+      # against the committed lock instead. That lock now records the real
+      # Packagist dist for core v0.30.0, so a green run still installs the
+      # published release rather than a local sibling checkout.
       - name: Composer install
-        run: composer update spora-ai/spora-core --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist
 
       - name: Run Pest
         run: ./vendor/bin/pest
@@ -57,10 +61,14 @@ jobs:
           coverage: none
           tools: composer
 
-      # spora-core resolves from Packagist against the declared floor,
-      # so a green run proves real-world compatibility.
+      # `composer install`, not `composer update`: this project's Sonar
+      # gate rates a build-time dependency resolve a security issue on new
+      # code (C Security Rating on New Code), so the floor is proven
+      # against the committed lock instead. That lock now records the real
+      # Packagist dist for core v0.30.0, so a green run still installs the
+      # published release rather than a local sibling checkout.
       - name: Composer install
-        run: composer update spora-ai/spora-core --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse --no-progress
@@ -79,10 +87,14 @@ jobs:
           coverage: none
           tools: composer
 
-      # spora-core resolves from Packagist against the declared floor,
-      # so a green run proves real-world compatibility.
+      # `composer install`, not `composer update`: this project's Sonar
+      # gate rates a build-time dependency resolve a security issue on new
+      # code (C Security Rating on New Code), so the floor is proven
+      # against the committed lock instead. That lock now records the real
+      # Packagist dist for core v0.30.0, so a green run still installs the
+      # published release rather than a local sibling checkout.
       - name: Composer install
-        run: composer update spora-ai/spora-core --no-interaction --prefer-dist
+        run: composer install --no-interaction --prefer-dist
 
       - name: Check code style
         # Same ruleset as Spora core's .php-cs-fixer.php so plugin style matches host.
