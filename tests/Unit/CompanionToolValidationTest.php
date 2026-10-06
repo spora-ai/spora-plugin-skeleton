@@ -74,6 +74,8 @@ test('the bundled companion-skill satisfies ToolsRecommendsSkillsValidator', fun
     }
 })->skip(
     ! class_exists(ToolsRecommendsSkillsValidator::class),
-    'Awaiting spora-core v0.29.0 — ToolsRecommendsSkillsValidator ships in PR spora-core#269. '
-        . 'Re-enable by deleting this guard once the operator has upgraded.',
+    'The resolved spora-core predates ToolsRecommendsSkillsValidator (added in v0.29.0 by '
+        . 'spora-core#269). composer.json floors core at >=0.29.0, so this only fires when a '
+        . 'stale install (e.g. an old composer.lock) is still on the vendor directory. '
+        . 'Re-enable by deleting this guard once the operator has run `composer update`.',
 );
