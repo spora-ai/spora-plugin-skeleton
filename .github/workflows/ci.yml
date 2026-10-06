@@ -38,7 +38,7 @@ jobs:
       # spora-core resolves from Packagist against the declared floor,
       # so a green run proves real-world compatibility.
       - name: Composer install
-        run: composer install --no-interaction --prefer-dist
+        run: composer update spora-ai/spora-core --no-interaction --prefer-dist
 
       - name: Run Pest
         run: ./vendor/bin/pest
@@ -60,7 +60,7 @@ jobs:
       # spora-core resolves from Packagist against the declared floor,
       # so a green run proves real-world compatibility.
       - name: Composer install
-        run: composer install --no-interaction --prefer-dist
+        run: composer update spora-ai/spora-core --no-interaction --prefer-dist
 
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse --no-progress
@@ -82,7 +82,7 @@ jobs:
       # spora-core resolves from Packagist against the declared floor,
       # so a green run proves real-world compatibility.
       - name: Composer install
-        run: composer install --no-interaction --prefer-dist
+        run: composer update spora-ai/spora-core --no-interaction --prefer-dist
 
       - name: Check code style
         # Same ruleset as Spora core's .php-cs-fixer.php so plugin style matches host.
