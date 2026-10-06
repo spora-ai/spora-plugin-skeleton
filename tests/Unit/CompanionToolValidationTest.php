@@ -7,6 +7,8 @@ use Spora\Plugins\Skeleton\CompanionTool;
 use Spora\Plugins\Skeleton\Tests\Support\Exceptions\TestTempDirectoryCreationException;
 use Spora\Services\ToolConfigNameResolver;
 use Spora\Services\ToolsRecommendsSkillsValidator;
+use Spora\Skills\Providers\FilesystemSkillProvider;
+use Spora\Skills\SkillProviderRegistry;
 use Spora\Skills\SkillScanner;
 
 /**
@@ -61,7 +63,10 @@ test('the bundled companion-skill satisfies ToolsRecommendsSkillsValidator', fun
         );
 
         $resolver = new ToolConfigNameResolver(new NullLogger(), [CompanionTool::class]);
-        $validator = new ToolsRecommendsSkillsValidator($resolver, $scanner);
+        // Core main (#292) reads skills through a provider registry rather than
+        // a scanner; the filesystem provider is the one production wires up.
+        $registry = new SkillProviderRegistry([new FilesystemSkillProvider($scanner)]);
+        $validator = new ToolsRecommendsSkillsValidator($resolver, $registry);
 
         expect($validator->validate())->toBe([]);
     } finally {
