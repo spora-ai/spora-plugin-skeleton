@@ -7,6 +7,8 @@ use Spora\Plugins\Skeleton\CompanionTool;
 use Spora\Plugins\Skeleton\Tests\Support\Exceptions\TestTempDirectoryCreationException;
 use Spora\Services\ToolConfigNameResolver;
 use Spora\Services\ToolsRecommendsSkillsValidator;
+use Spora\Skills\Providers\FilesystemSkillProvider;
+use Spora\Skills\SkillProviderRegistry;
 use Spora\Skills\SkillScanner;
 
 /**
@@ -61,7 +63,10 @@ test('the bundled companion-skill satisfies ToolsRecommendsSkillsValidator', fun
         );
 
         $resolver = new ToolConfigNameResolver(new NullLogger(), [CompanionTool::class]);
-        $validator = new ToolsRecommendsSkillsValidator($resolver, $scanner);
+        // Core main (#292) reads skills through a provider registry rather than
+        // a scanner; the filesystem provider is the one production wires up.
+        $registry = new SkillProviderRegistry([new FilesystemSkillProvider($scanner)]);
+        $validator = new ToolsRecommendsSkillsValidator($resolver, $registry);
 
         expect($validator->validate())->toBe([]);
     } finally {
@@ -69,6 +74,8 @@ test('the bundled companion-skill satisfies ToolsRecommendsSkillsValidator', fun
     }
 })->skip(
     ! class_exists(ToolsRecommendsSkillsValidator::class),
-    'Awaiting spora-core v0.29.0 — ToolsRecommendsSkillsValidator ships in PR spora-core#269. '
-        . 'Re-enable by deleting this guard once the operator has upgraded.',
+    'The resolved spora-core predates ToolsRecommendsSkillsValidator (added in v0.29.0 by '
+        . 'spora-core#269). composer.json floors core at >=0.29.0, so this only fires when a '
+        . 'stale install (e.g. an old composer.lock) is still on the vendor directory. '
+        . 'Re-enable by deleting this guard once the operator has run `composer update`.',
 );

@@ -21,6 +21,8 @@ it('recommends the bundled companion-skill slug', function (): void {
     expect($args['recommendsSkills'] ?? [])->toContain('companion-skill');
 })->skip(
     ! property_exists(Tool::class, 'recommendsSkills'),
-    'Awaiting spora-core v0.29.0 — #[Tool(recommendsSkills: ...)] ships in PR spora-core#269. '
-        . 'Re-enable by deleting this guard once the operator has upgraded.',
+    'The resolved spora-core predates #[Tool(recommendsSkills: ...)] (added in v0.29.0 by '
+        . 'spora-core#269). composer.json floors core at >=0.29.0, so this only fires when a '
+        . 'stale install (e.g. an old composer.lock) is still on the vendor directory. '
+        . 'Re-enable by deleting this guard once the operator has run `composer update`.',
 );
