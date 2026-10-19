@@ -13,6 +13,45 @@ Use this repository as a template for any new `spora-plugin`:
    under `src/Tools/` and list them in `src/SkeletonPlugin.php::tools()`.
 6. If your plugin needs database tables, add Laravel migrations under
    `database/migrations/` and bump `SkeletonPlugin::schemaVersion()`.
+7. If your plugin ships operator-facing strings, keep `locales/de.json` and
+   `translationsPaths()`, and add the German for each new string. See
+   [Translations](#translations) below for what belongs there and what does
+   not — the rule is narrower than it looks.
+
+## Translations
+
+A plugin ships its own catalogue at `locales/<lang>.json`, declared through
+`SkeletonPlugin::translationsPaths()`. Keys are the **English source text**:
+
+```json
+{ "How the greeting is phrased.": "Wie die Begrüßung formuliert ist." }
+```
+
+That is deliberate. Because the key *is* the string, editing the English orphans
+the translation and the host's `i18n:check` fails — which is the point. Semantic
+keys would make every copy edit a silent no-op.
+
+Spora resolves a string through **your** catalogue, then the host's, then the
+English literal. Shipping no catalogue at all is fine; you render English until
+you add one.
+
+### What not to translate
+
+**If the model reads it, it stays English — and so does the operator's view of
+it.** A German tool description degrades the model's tool selection, and a
+translated label that also reaches the model puts German into its prompt.
+
+| Do not translate | Because |
+|---|---|
+| `#[Tool].description` | goes into the LLM function definition |
+| `#[ToolParameter].description` | goes into the LLM parameter schema |
+| `#[ToolSetting].label` | reaches the model when `exposeToLlm: true`, and because keys *are* the English text, translating one translates it everywhere |
+| `#[ToolSetting].options` | the values are matched on, e.g. by an API consumer |
+| `ToolResult::ok()` / `fail()` content | model input |
+| `#[ToolOperation].operatorDescription` | reaches the model via the agent manifest |
+
+`#[ToolSetting].description` **is** operator copy and does translate — see the
+annotated example in `CompanionTool`.
 
 ## Authoring guidelines
 

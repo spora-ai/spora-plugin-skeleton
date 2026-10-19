@@ -7,6 +7,7 @@ namespace Spora\Plugins\Skeleton;
 use Spora\Services\PrincipalContext;
 use Spora\Tools\AbstractTool;
 use Spora\Tools\Attributes\Tool;
+use Spora\Tools\Attributes\ToolSetting;
 use Spora\Tools\ValueObjects\ToolResult;
 
 /**
@@ -26,6 +27,31 @@ use Spora\Tools\ValueObjects\ToolResult;
     name: 'companion',
     description: 'Demo tool that bundles a skill — fork-and-go example.',
     recommendsSkills: ['companion-skill'],
+)]
+#[ToolSetting(
+    key: 'greeting',
+    label: 'Greeting',
+    type: 'text',
+    description: 'Prefix placed before the returned text. Translates — this is the one part of a setting that reaches the operator in their language.',
+    default: 'Hello',
+)]
+#[ToolSetting(
+    key: 'tone',
+    // `label` is deliberately NOT translated, and that is the rule rather
+    // than an oversight: a `#[ToolSetting]` label can reach the model when
+    // `exposeToLlm` is true, and because catalogue keys *are* the English
+    // source text, translating one would translate it everywhere it appears.
+    // The same applies to `options` — below, `formal`/`casual` are keys the
+    // model or an API consumer matches on. Only `description` is operator copy.
+    label: 'Tone',
+    type: 'select',
+    description: 'How the greeting is phrased.',
+    default: 'casual',
+    options: [
+        'formal'   => 'Formal',
+        'casual'   => 'Casual',
+        'terse'    => 'Terse',
+    ],
 )]
 final class CompanionTool extends AbstractTool
 {

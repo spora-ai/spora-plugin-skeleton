@@ -16,6 +16,9 @@ use Spora\Plugins\Skeleton\Tools\EchoTool;
  * The base class provides no-op defaults for autoload(), drivers(),
  * recipePaths(), schemaVersion(), migrationsPath(), apps(), routes(),
  * boot(), and register().
+ *
+ * `src/Apps/ExampleApp.php` is the reference for the `apps()` hook. It is
+ * deliberately left unregistered — see that file for how to adopt it.
  */
 final class SkeletonPlugin extends AbstractPlugin
 {
@@ -56,6 +59,39 @@ final class SkeletonPlugin extends AbstractPlugin
     {
         return [
             __DIR__ . '/../agent-templates',
+        ];
+    }
+
+    /**
+     * Translation catalogues this plugin ships. Remove if your plugin
+     * ships none — a plugin with no catalogue simply renders English.
+     *
+     * Each directory holds one `<lang>.json` per language. Spora resolves
+     * a string through **your** catalogue first, then the host's, then the
+     * English literal itself, so shipping a catalogue is purely additive:
+     * nothing breaks while `de.json` is missing or partial.
+     *
+     * Keys are the English source text — `de.json` reads
+     * `{"Hello": "Hallo"}`, not `{"greeting": "Hallo"}`. That is what makes
+     * the host's CI able to fail when a string is edited without being
+     * re-translated: the key changes, the old entry orphans.
+     *
+     * **Not everything English belongs in here.** A string the model reads
+     * is never translated — not `#[Tool].description`, not
+     * `#[ToolParameter].description`, not `#[ToolSetting].label` or its
+     * `options`, and not `ToolResult` content. `locales/de.json` here holds
+     * exactly three entries, and each one is a string only an operator
+     * ever sees. See `CompanionTool` for the annotated version of the rule.
+     *
+     * Requires `spora-core >= 0.31.0` at runtime; older versions fail to
+     * resolve the method when the loader is strict.
+     *
+     * @return string[]
+     */
+    public function translationsPaths(): array
+    {
+        return [
+            __DIR__ . '/../locales',
         ];
     }
 }
