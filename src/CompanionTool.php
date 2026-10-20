@@ -28,21 +28,25 @@ use Spora\Tools\ValueObjects\ToolResult;
     description: 'Demo tool that bundles a skill — fork-and-go example.',
     recommendsSkills: ['companion-skill'],
 )]
+// `description` is operator copy and translates; `label` does not. The
+// reasoning is spelled out on the `tone` setting below.
 #[ToolSetting(
     key: 'greeting',
     label: 'Greeting',
     type: 'text',
-    description: 'Prefix placed before the returned text. Translates — this is the one part of a setting that reaches the operator in their language.',
+    description: 'Prefix placed before the returned text.',
     default: 'Hello',
 )]
 #[ToolSetting(
     key: 'tone',
     // `label` is deliberately NOT translated, and that is the rule rather
-    // than an oversight: a `#[ToolSetting]` label can reach the model when
-    // `exposeToLlm` is true, and because catalogue keys *are* the English
-    // source text, translating one would translate it everywhere it appears.
-    // The same applies to `options` — below, `formal`/`casual` are keys the
-    // model or an API consumer matches on. Only `description` is operator copy.
+    // than an oversight: some `#[ToolSetting]`s carry `exposeToLlm: true`
+    // and enter the model's config block, and because catalogue keys *are*
+    // the English source text, translating one would translate it
+    // everywhere it appears. The same holds for `options` — `formal`/
+    // `casual` are the keys the model or an API consumer matches on, and
+    // `Formal`/`Casual` are language endonyms that must read verbatim.
+    // Only `description` is operator copy, and it translates.
     label: 'Tone',
     type: 'select',
     description: 'How the greeting is phrased.',

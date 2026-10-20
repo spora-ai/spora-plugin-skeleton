@@ -14,7 +14,10 @@ Use this repository as a template for any new `spora-plugin`:
 6. If your plugin needs database tables, add Laravel migrations under
    `database/migrations/` and bump `SkeletonPlugin::schemaVersion()`.
 7. If your plugin ships operator-facing strings, keep `locales/de.json` and
-   `translationsPaths()`, and add the German for each new string. See
+   `translationsPaths()`, and add a German entry for each new string. A copy
+   edit is a different case: the key *is* the English text, so the old key
+   has to be **replaced**, not kept — an entry for text the source no longer
+   produces is an orphan that nothing will ever resolve. See
    [Translations](#translations) below for what belongs there and what does
    not — the rule is narrower than it looks.
 
@@ -27,26 +30,47 @@ A plugin ships its own catalogue at `locales/<lang>.json`, declared through
 { "How the greeting is phrased.": "Wie die Begrüßung formuliert ist." }
 ```
 
-That is deliberate. Because the key *is* the string, editing the English orphans
-the translation and the host's `i18n:check` fails — which is the point. Semantic
-keys would make every copy edit a silent no-op.
+That is deliberate. Because the key *is* the string, editing the English
+orphans the translation: the old entry matches nothing and the new English
+has no entry, so the string renders in English while the stale entry sits in
+the file looking perfectly fine. Semantic keys would make every copy edit a
+silent no-op.
 
-Spora resolves a string through **your** catalogue, then the host's, then the
-English literal. Shipping no catalogue at all is fine; you render English until
-you add one.
+**The host does not check your catalogue, so the orphan is inert.**
+`i18n:check` is the framework's own gate: it harvests the framework's own
+English sources and compares them with the framework's own catalogues. It
+has no notion of a plugin's catalogue — run against a plugin repository it
+compares that repository's `de.json` against the framework's strings and
+reports every catalogue key as an orphan. Nothing fails until the plugin's
+own CI checks it, which is why the skeleton ships the check:
+`tests/Unit/TranslationsCatalogueTest.php` asserts that the catalogue
+directory is the one `translationsPaths()` declares, that the JSON is valid,
+that no value is empty or identical to its English key, and that no key
+survives a copy edit. Copy it into your plugin. The Spora docs describe the
+same check under
+[Translations → Checking your catalogue](https://docs.spora-ai.com/develop/plugins/author-guide/translations#checking-your-catalogue).
+
+Spora resolves a string through **the host's** catalogue first, then yours,
+then the English literal. Shipping no catalogue at all is fine; you render
+English until you add one. On a collision — the same English key in both
+catalogues — **the host wins: your entry is dropped, with a warning in the
+log.** A plugin can only add a key, never shadow one, so a string you share
+with the host is translated in the host's catalogue alone.
 
 ### What not to translate
 
 **If the model reads it, it stays English — and so does the operator's view of
-it.** A German tool description degrades the model's tool selection, and a
-translated label that also reaches the model puts German into its prompt.
+it.** A German tool description degrades the model's tool selection. A
+translation is not scoped to one use either: because the catalogue key *is*
+the English text, it applies to every place that text appears — which is
+why the label and options rows below are unconditional.
 
 | Do not translate | Because |
 |---|---|
 | `#[Tool].description` | goes into the LLM function definition |
 | `#[ToolParameter].description` | goes into the LLM parameter schema |
-| `#[ToolSetting].label` | reaches the model when `exposeToLlm: true`, and because keys *are* the English text, translating one translates it everywhere |
-| `#[ToolSetting].options` | the values are matched on, e.g. by an API consumer |
+| `#[ToolSetting].label` | **never** translated, whatever the setting declares. *Some* settings carry `exposeToLlm: true` and enter the model's config block, so a translated label would put German into the prompt the moment somebody adds the flag — and because a catalogue key *is* the English text, it would apply to every setting reusing the same word |
+| `#[ToolSetting].options` | the **labels** are language endonyms that must read verbatim (`Deutsch` stays `Deutsch`), and the **keys** (`'formal'`, `'casual'`) are the stored values a model or an API consumer matches on. Neither half of the map goes into the catalogue |
 | `ToolResult::ok()` / `fail()` content | model input |
 | `#[ToolOperation].operatorDescription` | reaches the model via the agent manifest |
 
@@ -75,8 +99,13 @@ route plugin logic through `AgentOrchestrator` and `TaskService`.
 .
 ├── composer.json          # name=spora-ai/spora-plugin-<x>, type=spora-plugin
 ├── plugin.json            # manifest the PluginLoader reads at boot
+├── locales/               # translation catalogues (one <lang>.json per language)
+│   └── de.json            # the German catalogue; keys are the English source text
 ├── src/
 │   ├── SkeletonPlugin.php # PluginInterface implementation (FQCN matches plugin.json `class`)
+│   ├── CompanionTool.php  # the tool + bundled-skill example
+│   ├── Apps/
+│   │   └── ExampleApp.php # reference for the apps() hook (shipped unregistered)
 │   └── Tools/
 │       └── EchoTool.php   # one tool per file (replace this one)
 ├── skills/                # skills shipped with the plugin (one folder per skill)

@@ -67,24 +67,34 @@ final class SkeletonPlugin extends AbstractPlugin
      * ships none — a plugin with no catalogue simply renders English.
      *
      * Each directory holds one `<lang>.json` per language. Spora resolves
-     * a string through **your** catalogue first, then the host's, then the
-     * English literal itself, so shipping a catalogue is purely additive:
-     * nothing breaks while `de.json` is missing or partial.
+     * a string through **the host's** catalogue first, then yours, then
+     * the English literal itself, so shipping a catalogue is purely
+     * additive: nothing breaks while `de.json` is missing or partial. On
+     * a collision the host wins — your entry for a key the host also has
+     * is dropped, with a warning in the log — so a plugin can only add a
+     * key, never shadow one.
      *
      * Keys are the English source text — `de.json` reads
      * `{"Hello": "Hallo"}`, not `{"greeting": "Hallo"}`. That is what makes
-     * the host's CI able to fail when a string is edited without being
-     * re-translated: the key changes, the old entry orphans.
+     * a copy edit detectable: the key changes, the old entry orphans.
+     * Nothing checks that for you — the host's `i18n:check` harvests the
+     * framework's own sources and compares them with the framework's own
+     * catalogues, so it is not a plugin gate and an orphan stays inert
+     * until your own CI looks. `tests/Unit/TranslationsCatalogueTest.php`
+     * is that check.
      *
      * **Not everything English belongs in here.** A string the model reads
      * is never translated — not `#[Tool].description`, not
      * `#[ToolParameter].description`, not `#[ToolSetting].label` or its
      * `options`, and not `ToolResult` content. `locales/de.json` here holds
-     * exactly three entries, and each one is a string only an operator
-     * ever sees. See `CompanionTool` for the annotated version of the rule.
+     * only strings an operator ever sees: the two `#[ToolSetting]`
+     * descriptions, the example app's description, and the manifest's.
+     * See `CompanionTool` for the annotated version of the rule.
      *
-     * Requires `spora-core >= 0.31.0` at runtime; older versions fail to
-     * resolve the method when the loader is strict.
+     * The hook needs a `spora-core` that has it. An older core simply
+     * never calls the method, so the catalogue is silently ignored and the
+     * plugin renders English — which is what the permissive
+     * `>=0.30.0 <2.0.0` range in `composer.json` buys.
      *
      * @return string[]
      */
