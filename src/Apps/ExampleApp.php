@@ -16,9 +16,12 @@ use Spora\Apps\AppInterface;
  * To adopt it, return `[ExampleApp::class]` from `apps()`, add a Vue app under
  * `frontend/src/apps/`, and register that in the host's app registry.
  *
- * `displayName()` and `description()` are operator-facing and therefore
- * translatable — they are among the few strings Spora localizes on the PHP
- * side. Put their German in `locales/de.json`, keyed by the English text.
+ * `description()` is operator-facing and therefore translatable — it is
+ * among the few strings Spora localizes on the PHP side. Its German is in
+ * `locales/de.json`, keyed by the English text. `displayName()` travels the
+ * same path, but this skeleton's one-word name is left out of the
+ * catalogue: such a generic word collides easily with the host's catalogue
+ * and with other plugins', and the host's entry would win.
  */
 final class ExampleApp implements AppInterface
 {
@@ -39,11 +42,11 @@ final class ExampleApp implements AppInterface
 
     public function icon(): string
     {
-        return 'layout-dashboard';
+        return 'grid';
     }
 
     public function accent(): string
     {
-        return 'slate';
+        return 'sky';
     }
 }
