@@ -104,8 +104,6 @@ route plugin logic through `AgentOrchestrator` and `TaskService`.
 ├── src/
 │   ├── SkeletonPlugin.php # PluginInterface implementation (FQCN matches plugin.json `class`)
 │   ├── CompanionTool.php  # the tool + bundled-skill example
-│   ├── Apps/
-│   │   └── ExampleApp.php # reference for the apps() hook (shipped unregistered)
 │   └── Tools/
 │       └── EchoTool.php   # one tool per file (replace this one)
 ├── skills/                # skills shipped with the plugin (one folder per skill)

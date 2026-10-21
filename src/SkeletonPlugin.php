@@ -16,9 +16,6 @@ use Spora\Plugins\Skeleton\Tools\EchoTool;
  * The base class provides no-op defaults for autoload(), drivers(),
  * recipePaths(), schemaVersion(), migrationsPath(), apps(), routes(),
  * boot(), and register().
- *
- * `src/Apps/ExampleApp.php` is the reference for the `apps()` hook. It is
- * deliberately left unregistered — see that file for how to adopt it.
  */
 final class SkeletonPlugin extends AbstractPlugin
 {
