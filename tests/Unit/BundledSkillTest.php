@@ -25,8 +25,6 @@ use Spora\Tools\Attributes\Tool;
  */
 
 /**
- * Every `#[Tool]` the plugin registers, keyed by its wire name.
- *
  * @return array<string, Tool>
  */
 function skeletonRegisteredTools(): array
@@ -44,8 +42,6 @@ function skeletonRegisteredTools(): array
 }
 
 /**
- * Slugs declared across every registered tool via `recommendsSkills`.
- *
  * @return list<string>
  */
 function skeletonRecommendedSkillSlugs(): array
@@ -62,8 +58,6 @@ function skeletonRecommendedSkillSlugs(): array
 }
 
 /**
- * Scan the plugin's real `skills/` roots through core's own scanner.
- *
  * The resolver is wired in so core validates `allowed-tools` against the
  * installed tool set rather than skipping that check.
  *

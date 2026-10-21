@@ -8,14 +8,11 @@ use Spora\Plugins\AbstractPlugin;
 use Spora\Plugins\Skeleton\Tools\EchoTool;
 
 /**
- * Plugin entry point — extending {@see AbstractPlugin} (rather than directly
- * implementing {@see \Spora\Plugins\PluginInterface}) means we only have to
- * override the hooks we actually use. This skeleton ships tools, skills,
- * and agent templates as the worked example.
+ * The plugin's entry point — `plugin.json`'s `class` must name this FQCN.
  *
- * The base class provides no-op defaults for autoload(), drivers(),
- * recipePaths(), schemaVersion(), migrationsPath(), apps(), routes(),
- * boot(), and register().
+ * Extending {@see AbstractPlugin} rather than implementing
+ * {@see \Spora\Plugins\PluginInterface} leaves every hook the plugin does not
+ * use at its default.
  */
 final class SkeletonPlugin extends AbstractPlugin
 {
@@ -34,8 +31,8 @@ final class SkeletonPlugin extends AbstractPlugin
     }
 
     /**
-     * Skills this plugin ships. SkillScanner walks depth-1; remove this
-     * method if your plugin ships none.
+     * Skill directories this plugin ships. SkillScanner walks each depth-1.
+     * Remove this method if your plugin ships none.
      *
      * @return string[]
      */
@@ -47,8 +44,8 @@ final class SkeletonPlugin extends AbstractPlugin
     }
 
     /**
-     * Agent-template files this plugin ships. Remove if your plugin
-     * ships none.
+     * Agent-template files this plugin ships. Remove this method if your
+     * plugin ships none.
      *
      * @return string[]
      */
@@ -60,38 +57,12 @@ final class SkeletonPlugin extends AbstractPlugin
     }
 
     /**
-     * Translation catalogues this plugin ships. Remove if your plugin
-     * ships none — a plugin with no catalogue simply renders English.
+     * The directories holding this plugin's translation catalogues, one
+     * `<lang>.json` per language.
      *
-     * Each directory holds one `<lang>.json` per language. Spora resolves
-     * a string through **the host's** catalogue first, then yours, then
-     * the English literal itself, so shipping a catalogue is purely
-     * additive: nothing breaks while `de.json` is missing or partial. On
-     * a collision the host wins — your entry for a key the host also has
-     * is dropped, with a warning in the log — so a plugin can only add a
-     * key, never shadow one.
-     *
-     * Keys are the English source text — `de.json` reads
-     * `{"Hello": "Hallo"}`, not `{"greeting": "Hallo"}`. That is what makes
-     * a copy edit detectable: the key changes, the old entry orphans.
-     * Nothing checks that for you — the host's `i18n:check` harvests the
-     * framework's own sources and compares them with the framework's own
-     * catalogues, so it is not a plugin gate and an orphan stays inert
-     * until your own CI looks. `tests/Unit/TranslationsCatalogueTest.php`
-     * is that check.
-     *
-     * **Not everything English belongs in here.** A string the model reads
-     * is never translated — not `#[Tool].description`, not
-     * `#[ToolParameter].description`, not `#[ToolSetting].label` or its
-     * `options`, and not `ToolResult` content. `locales/de.json` here holds
-     * only strings an operator ever sees: the two `#[ToolSetting]`
-     * descriptions, the example app's description, and the manifest's.
-     * See `CompanionTool` for the annotated version of the rule.
-     *
-     * The hook needs a `spora-core` that has it. An older core simply
-     * never calls the method, so the catalogue is silently ignored and the
-     * plugin renders English — which is what the permissive
-     * `>=0.30.0 <2.0.0` range in `composer.json` buys.
+     * Which strings translate, and whose catalogue wins a collision, is
+     * spelled out in the README's [Translations](../README.md#translations)
+     * section.
      *
      * @return string[]
      */

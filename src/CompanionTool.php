@@ -13,14 +13,10 @@ use Spora\Tools\ValueObjects\ToolResult;
 /**
  * Fork-and-go example that ships a tool + skill pair.
  *
- * The bundled skill lives at `skills/companion-skill/SKILL.md` and is
- * loaded by Spora's SkillScanner at boot. `#[Tool(recommendsSkills: ...)]`
- * shipped in spora-core v0.29.0 (PR spora-core#269) and is declared below,
- * so the operator UI's "Enable skill" affordance picks the skill up
- * automatically.
- *
- * The slug MUST match the skill directory name. Renaming one without the
- * other fails core's strict-mode check with `TOOLS_RECOMMENDS_SKILLS_MISSING`;
+ * `#[Tool(recommendsSkills: ...)]` declares the skills this tool bundles:
+ * enabling the tool adds the slug to the Skill tool's allowlist. The slug
+ * MUST match the skill directory name — renaming one without the other fails
+ * core's strict-mode check with `TOOLS_RECOMMENDS_SKILLS_MISSING`, and
  * `tests/Unit/BundledSkillTest.php` enforces the pairing at build time.
  */
 #[Tool(
@@ -28,8 +24,9 @@ use Spora\Tools\ValueObjects\ToolResult;
     description: 'Demo tool that bundles a skill — fork-and-go example.',
     recommendsSkills: ['companion-skill'],
 )]
-// `description` is operator copy and translates; `label` does not. The
-// reasoning is spelled out on the `tone` setting below.
+// Of a `#[ToolSetting]`, only `description` is operator copy and translates;
+// `label` and `options` never do. The README's "What not to translate" table
+// gives the reason.
 #[ToolSetting(
     key: 'greeting',
     label: 'Greeting',
@@ -39,14 +36,6 @@ use Spora\Tools\ValueObjects\ToolResult;
 )]
 #[ToolSetting(
     key: 'tone',
-    // `label` is deliberately NOT translated, and that is the rule rather
-    // than an oversight: some `#[ToolSetting]`s carry `exposeToLlm: true`
-    // and enter the model's config block, and because catalogue keys *are*
-    // the English source text, translating one would translate it
-    // everywhere it appears. The same holds for `options` — `formal`/
-    // `casual` are the keys the model or an API consumer matches on, and
-    // `Formal`/`Casual` are language endonyms that must read verbatim.
-    // Only `description` is operator copy, and it translates.
     label: 'Tone',
     type: 'select',
     description: 'How the greeting is phrased.',

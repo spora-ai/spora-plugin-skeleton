@@ -13,12 +13,12 @@ $pluginRoot = dirname(__DIR__, 2);
  *
  * A catalogue key is the English source string byte for byte, so a key the
  * source no longer produces is an orphan — the copy edit that was never
- * re-translated. The literals are read through the tokenizer rather than
- * searched as raw text, because the source writes an apostrophe as `\'`
- * and a raw substring search would never match the key.
+ * re-translated. The literals come from the tokenizer rather than a raw text
+ * search, because a source literal containing an apostrophe is written `\'`,
+ * and a raw search would never match the key.
  *
- * The manifest description counts as source: it is the plugin's own
- * English copy and `locales/de.json` translates it.
+ * The manifest description counts as source: it is the plugin's own English
+ * copy, and `locales/de.json` translates it.
  *
  * @return list<string>
  */
@@ -41,8 +41,9 @@ $sourceLiterals = function (string $root): array {
 
             $literal = substr($token[1], 1, -1);
 
-            // Single-quoted PHP escapes only `\'` and `\\`; a double-quoted
-            // one carries the full escape set.
+            // Single-quoted PHP strings escape only `\'` and `\\`; a
+            // double-quoted one carries C-style escapes, which
+            // `stripcslashes()` decodes.
             $literals[] = $token[1][0] === "'"
                 ? str_replace(['\\\\', "\\'"], ['\\', "'"], $literal)
                 : (string) stripcslashes($literal);

@@ -43,7 +43,7 @@ has no notion of a plugin's catalogue — run against a plugin repository it
 compares that repository's `de.json` against the framework's strings and
 reports every catalogue key as an orphan. Nothing fails until the plugin's
 own CI checks it, which is why the skeleton ships the check:
-`tests/Unit/TranslationsCatalogueTest.php` asserts that the catalogue
+`tests/Unit/LocaleCatalogTest.php` asserts that the catalogue
 directory is the one `translationsPaths()` declares, that the JSON is valid,
 that no value is empty or identical to its English key, and that no key
 survives a copy edit. Copy it into your plugin. The Spora docs describe the
@@ -85,13 +85,9 @@ framework-internal, schema versioning, deprecation policy — live in the
 The driver / history value-object layer is **framework-internal**:
 route plugin logic through `AgentOrchestrator` and `TaskService`.
 
-> **Skills feature note.** The skeleton's `skillPaths()` override
-> requires `spora-core ≥ 0.12.0` at runtime (the `skillPaths()` hook
-> was added in v0.12). Older spora-core versions will throw a fatal
-> when the loader fails to resolve the missing method. The skeleton's
-> `composer.json` still requires `>=0.3.0 <1.0.0` for compatibility
-> with existing installations; plugin authors using the Skills
-> feature should pin to `^0.12`.
+> **Skills feature note.** The `skillPaths()` hook needs `spora-core ≥ 0.12`.
+> The skeleton's `composer.json` floors core at `>=0.30.0`, so the hook is
+> always there; an older core simply never calls the method.
 
 ## Layout
 
