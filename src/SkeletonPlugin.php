@@ -8,14 +8,11 @@ use Spora\Plugins\AbstractPlugin;
 use Spora\Plugins\Skeleton\Tools\EchoTool;
 
 /**
- * Plugin entry point — extending {@see AbstractPlugin} (rather than directly
- * implementing {@see \Spora\Plugins\PluginInterface}) means we only have to
- * override the hooks we actually use. This skeleton ships tools, skills,
- * and agent templates as the worked example.
+ * The plugin's entry point — `plugin.json`'s `class` must name this FQCN.
  *
- * The base class provides no-op defaults for autoload(), drivers(),
- * recipePaths(), schemaVersion(), migrationsPath(), apps(), routes(),
- * boot(), and register().
+ * Extending {@see AbstractPlugin} rather than implementing
+ * {@see \Spora\Plugins\PluginInterface} leaves every hook the plugin does not
+ * use at its default.
  */
 final class SkeletonPlugin extends AbstractPlugin
 {
@@ -34,8 +31,8 @@ final class SkeletonPlugin extends AbstractPlugin
     }
 
     /**
-     * Skills this plugin ships. SkillScanner walks depth-1; remove this
-     * method if your plugin ships none.
+     * Skill directories this plugin ships. SkillScanner walks each depth-1.
+     * Remove this method if your plugin ships none.
      *
      * @return string[]
      */
@@ -47,8 +44,8 @@ final class SkeletonPlugin extends AbstractPlugin
     }
 
     /**
-     * Agent-template files this plugin ships. Remove if your plugin
-     * ships none.
+     * Agent-template files this plugin ships. Remove this method if your
+     * plugin ships none.
      *
      * @return string[]
      */
@@ -56,6 +53,23 @@ final class SkeletonPlugin extends AbstractPlugin
     {
         return [
             __DIR__ . '/../agent-templates',
+        ];
+    }
+
+    /**
+     * The directories holding this plugin's translation catalogues, one
+     * `<lang>.json` per language.
+     *
+     * Which strings translate, and whose catalogue wins a collision, is
+     * spelled out in the README's [Translations](../README.md#translations)
+     * section.
+     *
+     * @return string[]
+     */
+    public function translationsPaths(): array
+    {
+        return [
+            __DIR__ . '/../locales',
         ];
     }
 }

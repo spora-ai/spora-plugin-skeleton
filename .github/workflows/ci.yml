@@ -38,9 +38,8 @@ jobs:
       # `composer install`, not `composer update`: this project's Sonar
       # gate rates a build-time dependency resolve a security issue on new
       # code (C Security Rating on New Code), so the floor is proven
-      # against the committed lock instead. That lock now records the real
-      # Packagist dist for core v0.30.0, so a green run still installs the
-      # published release rather than a local sibling checkout.
+      # against the committed lock. That lock pins the published core, not a
+      # local sibling checkout, so a green run installs the real release.
       - name: Composer install
         run: composer install --no-interaction --prefer-dist
 
@@ -61,12 +60,8 @@ jobs:
           coverage: none
           tools: composer
 
-      # `composer install`, not `composer update`: this project's Sonar
-      # gate rates a build-time dependency resolve a security issue on new
-      # code (C Security Rating on New Code), so the floor is proven
-      # against the committed lock instead. That lock now records the real
-      # Packagist dist for core v0.30.0, so a green run still installs the
-      # published release rather than a local sibling checkout.
+      # `composer install`, not `composer update` — the Sonar gate's reason is
+      # in the test job above.
       - name: Composer install
         run: composer install --no-interaction --prefer-dist
 
@@ -87,12 +82,8 @@ jobs:
           coverage: none
           tools: composer
 
-      # `composer install`, not `composer update`: this project's Sonar
-      # gate rates a build-time dependency resolve a security issue on new
-      # code (C Security Rating on New Code), so the floor is proven
-      # against the committed lock instead. That lock now records the real
-      # Packagist dist for core v0.30.0, so a green run still installs the
-      # published release rather than a local sibling checkout.
+      # `composer install`, not `composer update` — the Sonar gate's reason is
+      # in the test job above.
       - name: Composer install
         run: composer install --no-interaction --prefer-dist
 
